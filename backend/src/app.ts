@@ -35,6 +35,5 @@ swaggerConfig(app);
 
 app.use("/api", messagesRouter);
 
-//const appRoutes: IRouter[] =Object.values(routes)
 
 export { app };
