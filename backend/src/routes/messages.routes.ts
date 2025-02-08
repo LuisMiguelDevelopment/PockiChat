@@ -1,6 +1,8 @@
 import { type IRouter, Router } from "express";
 
 import { ObtenerRespuestaIA } from "../controllers/messages.controller.js";
+import { validateInput } from "../middleware/messages.middleware.js";
+import { getConnection } from "../middleware/dbConnection.middleware.js";
 
 const messagesRouter: IRouter = Router();
 
@@ -42,8 +44,6 @@ const messagesRouter: IRouter = Router();
  *         description: Error interno del servidor.
  */
 
-
-
 /**
  * @Route POST /messages
  * @Description Obtiene una respuesta de la IA
@@ -51,7 +51,11 @@ const messagesRouter: IRouter = Router();
  * @async
  */
 
-
-messagesRouter.post("/messages", ObtenerRespuestaIA);
+messagesRouter.post(
+  "/messages",
+  validateInput,
+  getConnection,
+  ObtenerRespuestaIA
+);
 
 export { messagesRouter };

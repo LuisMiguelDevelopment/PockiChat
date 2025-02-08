@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, type Request, type Response } from "express";
 import { pool } from "../config/db.js";
 
 /**
