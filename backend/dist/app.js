@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { connectionDB } from "./config/db.js";
 /**
  * Inicio de la aplicación de express para el uso de la REST API
  * @see {@link https://www.npmjs.com/package/express}
@@ -20,6 +21,7 @@ const options = {
 };
 app.use(cors(options));
 app.use(bodyParser.json({ limit: "10mb" }));
+connectionDB();
 const APILINK = "/api";
 //const appRoutes: IRouter[] =Object.values(routes)
 export { app };

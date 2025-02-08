@@ -6,6 +6,7 @@ import express, {
 } from "express";
 import cors, { type CorsOptions } from "cors";
 import bodyParser from "body-parser";
+import { connectionDB } from "./config/db.js";
 
 /**
  * Inicio de la aplicación de express para el uso de la REST API
@@ -30,6 +31,8 @@ const options: CorsOptions = {
 
 app.use(cors(options));
 app.use(bodyParser.json({ limit: "10mb" }));
+
+connectionDB();
 
 const APILINK = "/api";
 
