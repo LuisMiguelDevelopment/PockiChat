@@ -4,6 +4,4 @@ export const ObtenerRespuestaIARequest = (input: string) => {
   return axios.post("/messages", { message: input });
 };
 
-export const ObtenerHistorialRequest = () => {
-  return axios.get("/messages");
-};
+export const ObtenerHistorialRequest = () => axios.get("/messages");

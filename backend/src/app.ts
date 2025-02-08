@@ -21,12 +21,13 @@ const app: Express = express();
 
 const options: CorsOptions = {
   origin: "http://localhost:5173",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PATCH"],
+  credentials: true,
 };
 
-app.use(express.json());
 app.use(cors(options));
+
+app.use(express.json());
 app.use(bodyParser.json({ limit: "10mb" }));
 
 connectionDB();
@@ -34,6 +35,5 @@ connectionDB();
 swaggerConfig(app);
 
 app.use("/api", messagesRouter);
-
 
 export { app };
