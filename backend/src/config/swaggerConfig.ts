@@ -1,6 +1,6 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { Express } from "express";
+import { type Express } from "express";
 import { PORT } from "./config.js";
 
 const options: swaggerJSDoc.Options = {
