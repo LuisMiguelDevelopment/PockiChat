@@ -1,7 +1,7 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
-
+import { PORT } from "./config.js";
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -13,7 +13,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:300",
+        url: `http://localhost:${PORT}`,
       },
     ],
   },
