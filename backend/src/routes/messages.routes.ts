@@ -43,6 +43,15 @@ const messagesRouter: IRouter = Router();
  */
 
 
+
+/**
+ * @Route POST /messages
+ * @Description Obtiene una respuesta de la IA
+ * @returns {Promise<Array>} - La respuesta de la IA.
+ * @async
+ */
+
+
 messagesRouter.post("/messages", ObtenerRespuestaIA);
 
 export { messagesRouter };
