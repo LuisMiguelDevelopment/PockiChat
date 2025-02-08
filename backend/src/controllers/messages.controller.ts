@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   insertMessage,
   getMessagesCount,
+  getMessageHistory,
 } from "../services/message.service.js";
 
 const AI_URL =
@@ -12,12 +13,15 @@ const AI_URL =
 const BOT_BIEVENIDA =
   "¡Hola! Soy Pocki, tu asistente virtual. ¿En qué puedo ayudarte hoy?";
 
+
 /**
- * Función para obtener la respuesta de la IA.
- * @param {Request<{}, {}, AIRequest>} req - El objeto de solicitud.
- * @param {Response} res - El objeto de respuesta.
- * @returns {Promise<Response>} - La respuesta de la IA.
- */
+ * Obtiene la respuesta de la IA.
+ * @param {Request} req - Request.
+ * @param {Response} res - Response.
+ * @returns {Promise} Promise con la respuesta.
+ * @throws {Error} Error - Error al obtener la respuesta de la IA.
+
+  */
 
 export const ObtenerRespuestaIA = async (
   req: Request<{}, {}, AIRequest>,
@@ -49,7 +53,23 @@ export const ObtenerRespuestaIA = async (
 
     await insertMessage(connection, input, "user");
 
-    const response = await axios.post<AIResponse>(AI_URL, { input });
+    const history = await getMessageHistory(connection);
+
+    const messages = history.map((message) => ({
+      role: message.sender === "bot" ? "bot" : "user",
+      content: message.content,
+    }));
+
+    messages.push({ role: "user", content: input });
+
+    const formattedHistory = messages
+      .map((m) => `${m.role === "bot" ? "Bot" : "Usuario"}: ${m.content}`)
+      .join("\n");
+
+    const response = await axios.post<AIResponse>(AI_URL, {
+      input: formattedHistory,
+    });
+
     botResponse = response.data.choices[0].message.content;
 
     await insertMessage(connection, botResponse, "bot");
@@ -62,7 +82,9 @@ export const ObtenerRespuestaIA = async (
     });
     return;
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener la respuesta de la IA" });
+    res
+      .status(500)
+      .json({ message: "Error al obtener la respuesta de la IA", error });
     return;
   }
 };

@@ -29,3 +29,18 @@ export const getMessagesCount = async (
   );
   return (rows as any)[0].count;
 };
+
+/**
+ * Obtiene el historial de mensajes.
+ * @param {PoolConnection} connection - Conexión a la base de datos.
+ * @returns {Promise} Promise con el historial de mensajes.
+ */
+
+export const getMessageHistory = async (
+  connection: PoolConnection
+): Promise<{ content: string; sender: string }[]> => {
+  const [rows] = await connection.query(
+    "SELECT content, sender FROM messages ORDER BY timestamps ASC"
+  );
+  return rows as { content: string; sender: string }[];
+};
