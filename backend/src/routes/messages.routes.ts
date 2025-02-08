@@ -1,6 +1,9 @@
 import { type IRouter, Router } from "express";
 
-import { ObtenerRespuestaIA } from "../controllers/messages.controller.js";
+import {
+  HistoryChat,
+  ObtenerRespuestaIA,
+} from "../controllers/messages.controller.js";
 import { validateInput } from "../middleware/messages.middleware.js";
 import { getConnection } from "../middleware/dbConnection.middleware.js";
 
@@ -57,5 +60,36 @@ messagesRouter.post(
   getConnection,
   ObtenerRespuestaIA
 );
+
+
+/**
+ * @swagger
+ * /messages:
+ *   get:
+ *     summary: Obtiene el historial de mensajes.
+ *     description: Obtiene el historial de mensajes.
+ *     tags:
+ *       - Messages
+ *     responses:
+ *       200:
+ *         description: Historial de mensajes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   content:
+ *                     type: string
+ *                     example: "¡Hola! Estoy bien, ¿y tú?"
+ *                   sender:
+ *                     type: string
+ *                     example: "bot"
+ *       500:
+ *         description: Error interno del servidor.
+ */
+
+messagesRouter.get("/messages", getConnection, HistoryChat);
 
 export { messagesRouter };

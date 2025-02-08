@@ -13,7 +13,6 @@ const AI_URL =
 const BOT_BIEVENIDA =
   "¡Hola! Soy Pocki, tu asistente virtual. ¿En qué puedo ayudarte hoy?";
 
-
 /**
  * Obtiene la respuesta de la IA.
  * @param {Request} req - Request.
@@ -85,6 +84,45 @@ export const ObtenerRespuestaIA = async (
     res
       .status(500)
       .json({ message: "Error al obtener la respuesta de la IA", error });
+    return;
+  }
+};
+
+/**
+ * Obtiene el historial de mensajes.
+ * @param {Request} req - Request.
+ * @param {Response} res - Response.
+ * @returns {Promise} Promise con el historial de mensajes.
+ * @throws {Error} Error - Error al obtener el historial de mensajes.
+ */
+
+export const HistoryChat = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const connection = req.dbConnection;
+
+  try {
+    if (!connection) {
+      res
+        .status(500)
+        .json({ message: "Error al obtener la conexión a la base de datos" });
+      return;
+    }
+
+    const response = await getMessageHistory(connection);
+
+    const messages = response.map((message: any) => ({
+      sender: message.sender,
+      content: message.content,
+    }));
+
+    res.json(messages);
+    return;
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener el historial de mensajes", error });
     return;
   }
 };
