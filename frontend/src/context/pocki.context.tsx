@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 import {
   ObtenerRespuestaIARequest,
   ObtenerHistorialRequest,
+  ResetearChatRequest,
 } from "@/api/pocki";
 
 interface PockiContextType {
@@ -63,9 +64,21 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
     }
   };
 
+  const ResetearChat = async () => {
+    try {
+      await ResetearChatRequest();
+      setHistorial([]);
+      setRespuestaIA([]);
+      await ObtenerHistorial();
+    } catch (error) {
+      console.error("Error al resetear el chat", error);
+    }
+  };
+
   const pockiContextValue = {
     ObtenerHistorial,
     ObtenerRespuestaIA,
+    ResetearChat,
     historial,
     respuestaIA,
     cargando,

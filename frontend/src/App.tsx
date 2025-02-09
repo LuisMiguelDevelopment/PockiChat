@@ -4,9 +4,15 @@ import { Box, Button, Heading, Image, Input, Text } from "@chakra-ui/react";
 import robot from "/robot.gif";
 import dragon from "/dragon.gif";
 import { IoSend } from "react-icons/io5";
+import { RiResetRightLine } from "react-icons/ri";
 function App() {
-  const { ObtenerHistorial, historial, ObtenerRespuestaIA, cargando } =
-    usePockiContext();
+  const {
+    ObtenerHistorial,
+    historial,
+    ObtenerRespuestaIA,
+    cargando,
+    ResetearChat,
+  } = usePockiContext();
   const [mensaje, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState(historial);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -51,6 +57,14 @@ function App() {
     }
   };
 
+  const handleReset = async () => {
+    try {
+      await ResetearChat();
+    } catch (error) {
+      console.log("Error al resetear el chat", error);
+    }
+  };
+
   return (
     <Box
       display={"flex"}
@@ -76,7 +90,6 @@ function App() {
           </Heading>
         </Box>
         <Box
-        
           bg={"white"}
           color={"#4A4A4A"}
           borderRadius={"20px"}
@@ -133,7 +146,6 @@ function App() {
             bg="white"
             w="100%"
             p={2}
-           
           >
             <Box borderRadius="20px" bg="#EAEAEA" w="100%" p={1}>
               <Input
@@ -163,6 +175,21 @@ function App() {
               <IoSend size={30} color="white" />
             </Button>
           </Box>
+          <Button
+            ml={2}
+            bg="#white"
+            borderRadius="50%"
+            h={50}
+            w={50}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            position={"absolute"}
+            top={15}
+            onClick={handleReset}
+          >
+            <RiResetRightLine size={30} color="#632AE7" />
+          </Button>
         </Box>
       </Box>
     </Box>
