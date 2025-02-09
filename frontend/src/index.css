@@ -1,12 +1,38 @@
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
 }
 
+/* Estilizar todos los scrollbars */
+::-webkit-scrollbar {
+  width: 8px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #632ae7; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a1db6; 
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #632ae7 #f1f1f1;
+}
+
+
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #f0f0f5;
   -webkit-font-smoothing: antialiased;
 }
