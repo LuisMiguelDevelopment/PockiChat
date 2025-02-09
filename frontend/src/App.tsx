@@ -96,7 +96,8 @@ function App() {
         justifyContent={"center"}
         alignItems={"center"}
         flexDir={"column"}
-        w={"500px"}
+        w={{ base: "100%", md: "500px" }}
+        m={{ base: 2, md: 0 }}
         bg={"#632AE7"}
         borderRadius={"20px"}
         position={"relative"}
@@ -115,7 +116,7 @@ function App() {
           border={"2px #632AE7 solid"}
           mt={4}
           overflowY="auto"
-          height={"600px"}
+          height={{ base: "450px", md: "600px" }}
           display="flex"
           flexDirection="column"
         >
@@ -145,6 +146,8 @@ function App() {
                         bg={item.sender === "bot" ? "#D3D3D3" : "#EAEAEA"}
                         p={2}
                         borderRadius="10px"
+                        display={"flex"}
+                        alignItems={"center"}
                       >
                         <Text>{item.content}</Text>
                       </Box>
