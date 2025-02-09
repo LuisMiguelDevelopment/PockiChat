@@ -27,17 +27,16 @@ export const ObtenerRespuestaIA = async (
   req: Request<{}, {}, AIRequest>,
   res: Response
 ): Promise<void> => {
+  const connection = req.dbConnection;
+
+  if (!connection) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener la conexión a la base de datos" });
+    return;
+  }
   try {
     const { input } = req.body;
-
-    const connection = req.dbConnection;
-
-    if (!connection) {
-      res
-        .status(500)
-        .json({ message: "Error al obtener la conexión a la base de datos" });
-      return;
-    }
 
     const messagesCount = await getMessagesCount(connection);
 
@@ -86,6 +85,8 @@ export const ObtenerRespuestaIA = async (
       .status(500)
       .json({ message: "Error al obtener la respuesta de la IA", error });
     return;
+  } finally {
+    connection.release();
   }
 };
 
@@ -103,14 +104,13 @@ export const HistoryChat = async (
 ): Promise<void> => {
   const connection = req.dbConnection;
 
+  if (!connection) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener la conexión a la base de datos" });
+    return;
+  }
   try {
-    if (!connection) {
-      res
-        .status(500)
-        .json({ message: "Error al obtener la conexión a la base de datos" });
-      return;
-    }
-
     const response = await getMessageHistory(connection);
 
     const messages = response.map((message: any) => ({
@@ -125,6 +125,8 @@ export const HistoryChat = async (
       .status(500)
       .json({ message: "Error al obtener el historial de mensajes", error });
     return;
+  } finally {
+    connection.release();
   }
 };
 
@@ -139,14 +141,13 @@ export const HistoryChat = async (
 export const ResetChat = async (req: Request, res: Response): Promise<void> => {
   const connection = req.dbConnection;
 
+  if (!connection) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener la conexión a la base de datos" });
+    return;
+  }
   try {
-    if (!connection) {
-      res
-        .status(500)
-        .json({ message: "Error al obtener la conexión a la base de datos" });
-      return;
-    }
-
     await clearMessages(connection);
 
     await insertMessage(connection, BOT_BIENVENIDA, "bot");
@@ -157,5 +158,7 @@ export const ResetChat = async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     res.status(500).json({ message: "Error al reiniciar el chat", error });
     return;
+  } finally {
+    connection.release();
   }
 };
