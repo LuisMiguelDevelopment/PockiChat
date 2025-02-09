@@ -45,8 +45,15 @@ export const getMessageHistory = async (
   return rows as { content: string; sender: string }[];
 };
 
-
-
-
+/**
+ * Elimina los mensajes.
+ * @param {PoolConnection} connection - Conexión a la base de datos.
+ * @returns {Promise} Promise con los mensajes.
+ */
+export const clearMessages = async (
+  connection: PoolConnection
+): Promise<void> => {
+  await connection.query("DELETE FROM messages");
+};
 
 

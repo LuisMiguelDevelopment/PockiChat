@@ -5,12 +5,13 @@ import {
   insertMessage,
   getMessagesCount,
   getMessageHistory,
+  clearMessages,
 } from "../services/message.service.js";
 
 const AI_URL =
   "http://pocki-api-env-1.eba-pprtwpab.us-east-1.elasticbeanstalk.com/api/getOpenaiResponse";
 
-const BOT_BIEVENIDA =
+const BOT_BIENVENIDA =
   "¡Hola! Soy Pocki, tu asistente virtual. ¿En qué puedo ayudarte hoy?";
 
 /**
@@ -43,7 +44,7 @@ export const ObtenerRespuestaIA = async (
     let botResponse = "";
 
     if (messagesCount === 0) {
-      botResponse = BOT_BIEVENIDA;
+      botResponse = BOT_BIENVENIDA;
       await insertMessage(connection, botResponse, "bot");
       connection.release();
       res.status(200).json({ message: botResponse });
@@ -123,6 +124,38 @@ export const HistoryChat = async (
     res
       .status(500)
       .json({ message: "Error al obtener el historial de mensajes", error });
+    return;
+  }
+};
+
+/**
+ * Reinicia el chat.
+ * @param {Request} req - Request.
+ * @param {Response} res - Response.
+ * @returns {Promise} Promise con el mensaje de chat reiniciado.
+ * @throws {Error} Error - Error al reiniciar el chat.
+ */
+
+export const ResetChat = async (req: Request, res: Response): Promise<void> => {
+  const connection = req.dbConnection;
+
+  try {
+    if (!connection) {
+      res
+        .status(500)
+        .json({ message: "Error al obtener la conexión a la base de datos" });
+      return;
+    }
+
+    await clearMessages(connection);
+
+    await insertMessage(connection, BOT_BIENVENIDA, "bot");
+
+    connection.release();
+
+    res.json({ message: "Chat reiniciado" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al reiniciar el chat", error });
     return;
   }
 };
