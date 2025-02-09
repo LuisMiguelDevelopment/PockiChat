@@ -6,6 +6,7 @@ import dragon from "/dragon.gif";
 import { IoSend } from "react-icons/io5";
 import { RiResetRightLine } from "react-icons/ri";
 function App() {
+  // Contexto de Pocki con funciones y estados necesarios
   const {
     ObtenerHistorial,
     historial,
@@ -13,10 +14,13 @@ function App() {
     cargando,
     ResetearChat,
   } = usePockiContext();
-  const [mensaje, setMensaje] = useState("");
-  const [mensajes, setMensajes] = useState(historial);
-  const chatRef = useRef<HTMLDivElement>(null);
+  const [mensaje, setMensaje] = useState(""); // Estado para manejar el mensaje del usuario
+  const [mensajes, setMensajes] = useState(historial); // Estado local para gestionar los mensajes del chat
+  const chatRef = useRef<HTMLDivElement>(null); // Referencia para el área del chat, utilizada para el scroll automático
 
+  /**
+   * Carga el historial de mensajes al montar el componente.
+   */
   useEffect(() => {
     const cargarChat = async () => {
       try {
@@ -28,6 +32,10 @@ function App() {
     cargarChat();
   }, []);
 
+  /**
+   * Desplaza automáticamente el chat al final cuando cambian los mensajes.
+   */
+
   useEffect(() => {
     chatRef.current?.scrollTo({
       top: chatRef.current.scrollHeight,
@@ -35,12 +43,19 @@ function App() {
     });
   }, [mensajes]);
 
+  /**
+   * Desplaza el chat al final cuando cambia el historial o los mensajes.
+   */
+
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [historial, mensajes]);
 
+  /**
+   * Maneja el envío de mensajes del usuario.
+   */
   const manejarEnvio = async () => {
     if (!mensaje.trim()) return;
 
@@ -57,6 +72,9 @@ function App() {
     }
   };
 
+  /**
+   * Maneja el reseteo del chat.
+   */
   const handleReset = async () => {
     try {
       await ResetearChat();
@@ -89,6 +107,7 @@ function App() {
             Pocki{" "}
           </Heading>
         </Box>
+        {/* Contenedor del chat */}
         <Box
           bg={"white"}
           color={"#4A4A4A"}
@@ -136,7 +155,7 @@ function App() {
               <Text>No hay historial disponible</Text>
             )}
           </Box>
-
+          {/* Campo de entrada y botón de envío */}
           <Box
             display="flex"
             alignItems="center"
@@ -175,6 +194,8 @@ function App() {
               <IoSend size={30} color="white" />
             </Button>
           </Box>
+
+          {/* Botón de reset */}
           <Button
             ml={2}
             bg="#white"

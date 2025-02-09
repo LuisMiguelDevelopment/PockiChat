@@ -90,6 +90,13 @@ messagesRouter.post(
  *         description: Error interno del servidor.
  */
 
+/**
+ * @Route GET /messages
+ * @Description Obtiene el historial del chat.
+ * @returns {Promise<Array>} - Envia el array con el historial.
+ * @async
+ */
+
 messagesRouter.get("/messages", getConnection, HistoryChat);
 
 /**
@@ -105,6 +112,13 @@ messagesRouter.get("/messages", getConnection, HistoryChat);
  *         description: Mensajes eliminados.
  *       500:
  *         description: Error interno del servidor.
+ */
+
+/**
+ * @Route POST /messages
+ * @Description Este endpoint borra el historial de mensajes del chat y añade un mensaje incial.
+ * @returns {void} Chat reseteado 
+ * @async
  */
 
 messagesRouter.post("/reset-chat", getConnection, ResetChat);

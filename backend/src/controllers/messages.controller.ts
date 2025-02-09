@@ -42,6 +42,7 @@ export const ObtenerRespuestaIA = async (
 
     let botResponse = "";
 
+    //Si no hay ningun mensaje , el bot generara la bienvenida 
     if (messagesCount === 0) {
       botResponse = BOT_BIENVENIDA;
       await insertMessage(connection, botResponse, "bot");
@@ -52,8 +53,10 @@ export const ObtenerRespuestaIA = async (
 
     await insertMessage(connection, input, "user");
 
+    //Obtiene la informacion de mensajes previos
     const history = await getMessageHistory(connection);
 
+    //Se transforma el historial en un formato adecuado
     const messages = history.map((message) => ({
       role: message.sender === "bot" ? "bot" : "user",
       content: message.content,
@@ -61,10 +64,12 @@ export const ObtenerRespuestaIA = async (
 
     messages.push({ role: "user", content: input });
 
+    //Se formate en un solo string 
     const formattedHistory = messages
-      .map((m) => `${m.role === "bot" ? "Bot" : "Usuario"}: ${m.content}`)
+      .map((m) => `${m.role === "bot" }: ${m.content}`)
       .join("\n");
 
+      //envio del input a la AI
     const response = await axios.post<AIResponse>(AI_URL, {
       input: formattedHistory,
     });
@@ -111,6 +116,8 @@ export const HistoryChat = async (
     return;
   }
   try {
+
+    //Obtiene el historial de todos los mensajes
     const response = await getMessageHistory(connection);
 
     const messages = response.map((message: any) => ({
@@ -148,8 +155,10 @@ export const ResetChat = async (req: Request, res: Response): Promise<void> => {
     return;
   }
   try {
+    //Elimina la totalidad de los mensajes
     await clearMessages(connection);
 
+    //Inserta en le mensaje de bienvenida 
     await insertMessage(connection, BOT_BIENVENIDA, "bot");
 
     connection.release();

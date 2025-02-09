@@ -1,6 +1,5 @@
 import { app } from "./app.js";
-
-const PORT = 3000;
+import { PORT } from "./config/config.js";
 
 /**
  * Función que inicia el servidor en el puerto espeficado

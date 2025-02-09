@@ -6,10 +6,38 @@ import {
 } from "@/api/pocki";
 
 interface PockiContextType {
+  /**
+   * Obtiene el historial de mensajes del chat.
+   * @returns {Promise<any>} Promesa con el historial de mensajes.
+   */
+
   ObtenerHistorial: () => Promise<any>;
+  /**
+   * Obtiene la respuesta de la IA a un mensaje.
+   * @param {string} input - Mensaje del usuario.
+   * @returns {Promise<any>} Promesa con la respuesta de la IA.
+   */
   ObtenerRespuestaIA: (input: string) => Promise<any>;
+
+  /**
+   * Resetea el chat.
+   * @returns {Promise<void>} Promesa vacía.
+   */
+  ResetearChat: () => Promise<void>;
+
+  /**
+   * Historial de mensajes del chat.
+   */
+
   historial: Array<any>;
+  /**
+   * Última respuesta de la IA.
+   */
   respuestaIA: Array<any>;
+
+  /**
+   * Indica si se está cargando una petición a la IA.
+   */
   cargando: boolean;
 }
 
@@ -37,6 +65,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
   const [respuestaIA, setRespuestaIA] = useState([]);
   const [cargando, setCargando] = useState(false);
 
+  // Funciones para obtener el historial, la respuesta de IA y resetear el chat
   const ObtenerHistorial = async () => {
     try {
       const response = await ObtenerHistorialRequest();
@@ -49,6 +78,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
     }
   };
 
+  // Función para obtener la respuesta de IA
   const ObtenerRespuestaIA = async (input: string) => {
     setCargando(true);
     try {
@@ -64,6 +94,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
     }
   };
 
+  // Función para resetear el chat
   const ResetearChat = async () => {
     try {
       await ResetearChatRequest();

@@ -27,13 +27,16 @@ const options: CorsOptions = {
 
 app.use(cors(options));
 
-app.use(express.json());
+//parsee peticiones a formato json
 app.use(bodyParser.json({ limit: "10mb" }));
 
+//Llamada conexion a la base de datos
 connectionDB();
 
+// Llamada de swaggerConfig
 swaggerConfig(app);
 
+//Api de los mensages
 app.use("/api", messagesRouter);
 
 export { app };
