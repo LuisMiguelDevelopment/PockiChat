@@ -36,6 +36,10 @@ Este proyecto consiste en el desarrollo de una aplicación web de chat interacti
 
 - https://pocki-chat.vercel.app/
 
+### **DOCUMENTACION CON SWAGGER**
+
+- https://pockichat-production.up.railway.app/api-docs/
+
 ---
 
 ## 📂 Estructura del Proyecto
@@ -100,6 +104,7 @@ Este proyecto consiste en el desarrollo de una aplicación web de chat interacti
    ```env
    PORT =3000
    FRONTEND_URL = http://localhost:5173
+   BACKEND_URL = http://localhost:3000
    DB_USER = root
    DB_PASSWORD = 1234
    DB_HOST = localhost
