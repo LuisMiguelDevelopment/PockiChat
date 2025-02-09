@@ -116,7 +116,7 @@ function App() {
           border={"2px #632AE7 solid"}
           mt={4}
           overflowY="auto"
-          height={{ base: "450px", md: "600px" }}
+          height={{ base: "400px", md: "600px" }}
           display="flex"
           flexDirection="column"
         >
