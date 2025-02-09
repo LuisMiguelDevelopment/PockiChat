@@ -70,7 +70,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
     try {
       const response = await ObtenerHistorialRequest();
       const data = response.data;
-      console.log(data);
+     // console.log(data);
       setHistorial(data);
     } catch (error) {
       console.error("Error al obtener el historial", error);
@@ -82,7 +82,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
   const ObtenerRespuestaIA = async (input: string) => {
     setCargando(true);
     try {
-      console.log(input);
+     //console.log(input);
       const response = await ObtenerRespuestaIARequest(input);
       setRespuestaIA(response.data);
       await ObtenerHistorial();

@@ -174,6 +174,7 @@ function App() {
                 type="text"
                 placeholder="Pregúntale a Pocki"
                 border="none"
+                outline={"none"}
                 h={50}
                 p={2}
                 value={mensaje}
