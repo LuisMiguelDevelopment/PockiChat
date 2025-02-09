@@ -2,6 +2,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { type Express } from "express";
 import { PORT } from "./config.js";
+import { BACKEND_URL } from "./config.js";
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -13,7 +14,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}/api`,
+        url: `${BACKEND_URL}/api ` || `http://localhost:${PORT}/api`,
       },
     ],
   },

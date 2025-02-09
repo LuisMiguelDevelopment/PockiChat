@@ -9,6 +9,7 @@ config();
 
 const PORT = process.env.PORT ?? 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "";
+const BACKEND_URL = process.env.BACKEND_URL ?? "";
 const DB_USER = process.env.DB_USER ?? "";
 const DB_PASSWORD = process.env.DB_PASSWORD ?? "";
 const DB_HOST = process.env.DB_HOST ?? "";
@@ -18,6 +19,7 @@ const DB_PORT = process.env.DB_PORT ?? "";
 export {
   PORT,
   FRONTEND_URL,
+  BACKEND_URL,
   DB_USER,
   DB_PASSWORD,
   DB_HOST,
