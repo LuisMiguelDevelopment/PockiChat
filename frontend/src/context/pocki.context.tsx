@@ -35,8 +35,8 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
   const ObtenerHistorial = async () => {
     try {
       const response = await ObtenerHistorialRequest();
-      console.log(response);
       const data = response.data;
+      console.log(data);
       setHistorial(data);
     } catch (error) {
       console.error("Error al obtener el historial", error);
