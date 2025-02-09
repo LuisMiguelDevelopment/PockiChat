@@ -1,6 +1,7 @@
 import express, { type Express } from "express";
 import cors, { type CorsOptions } from "cors";
 import bodyParser from "body-parser";
+import { FRONTEND_URL } from "./config/config.js";
 import { connectionDB } from "./config/db.js";
 import { swaggerConfig } from "./config/swaggerConfig.js";
 import { messagesRouter } from "./routes/messages.routes.js";
@@ -20,7 +21,7 @@ const app: Express = express();
  */
 
 const options: CorsOptions = {
-  origin: "http://localhost:5173",
+  origin: FRONTEND_URL,
   methods: ["GET", "POST", "PATCH"],
   credentials: true,
 };
