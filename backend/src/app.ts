@@ -1,20 +1,16 @@
-import express, {
-  type Application,
-  type IRouter,
-  type Response,
-  type Request,
-} from "express";
+import express, { type Express } from "express";
 import cors, { type CorsOptions } from "cors";
 import bodyParser from "body-parser";
 import { connectionDB } from "./config/db.js";
-
+import { swaggerConfig } from "./config/swaggerConfig.js";
+import { messagesRouter } from "./routes/messages.routes.js";
 /**
  * Inicio de la aplicación de express para el uso de la REST API
  * @see {@link https://www.npmjs.com/package/express}
  * @returns {Application}
  */
 
-const app: Application = express();
+const app: Express = express();
 
 /**
  * Opciones de configuración para el manejo de CORS.
@@ -25,17 +21,22 @@ const app: Application = express();
 
 const options: CorsOptions = {
   origin: "http://localhost:5173",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PATCH"],
+  credentials: true,
 };
 
 app.use(cors(options));
+
+//parsee peticiones a formato json
 app.use(bodyParser.json({ limit: "10mb" }));
 
+//Llamada conexion a la base de datos
 connectionDB();
 
-const APILINK = "/api";
+// Llamada de swaggerConfig
+swaggerConfig(app);
 
-//const appRoutes: IRouter[] =Object.values(routes)
+//Api de los mensages
+app.use("/api", messagesRouter);
 
 export { app };
