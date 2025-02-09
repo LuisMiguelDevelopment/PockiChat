@@ -188,8 +188,8 @@ Este proyecto consiste en el desarrollo de una aplicación web de chat interacti
 
 ## 📌 Despliegue
 
-- **Backend:** [Railway Link](https://pockichat-production.up.railway.app)
-- **Frontend:** [Vercel Link](https://pocki-chat.vercel.app)
+- **Backend:** [Railway Link](https://railway.com/)
+- **Frontend:** [Vercel Link](https://vercel.com/)
 
 ---
 
