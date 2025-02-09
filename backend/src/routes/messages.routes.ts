@@ -92,6 +92,21 @@ messagesRouter.post(
 
 messagesRouter.get("/messages", getConnection, HistoryChat);
 
+/**
+ * @swagger
+ * /reset-chat:
+ *   post:
+ *     summary: Reinicia el chat.
+ *     description: Elimina todos los mensajes del chat.
+ *     tags:
+ *       - Messages
+ *     responses:
+ *       200:
+ *         description: Mensajes eliminados.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+
 messagesRouter.post("/reset-chat", getConnection, ResetChat);
 
 export { messagesRouter };
