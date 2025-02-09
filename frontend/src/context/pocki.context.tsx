@@ -7,6 +7,8 @@ import {
 interface PockiContextType {
   ObtenerHistorial: () => Promise<any>;
   ObtenerRespuestaIA: (input: string) => Promise<any>;
+  historial: Array<any>;
+  respuestaIA: Array<any>;
 }
 
 // Crear un contexto de React
@@ -31,6 +33,7 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
 }) => {
   const [historial, setHistorial] = useState([]);
   const [respuestaIA, setRespuestaIA] = useState([]);
+  
 
   const ObtenerHistorial = async () => {
     try {
@@ -46,8 +49,10 @@ export const PockiContextProvider: React.FC<MyContextProviderProps> = ({
 
   const ObtenerRespuestaIA = async (input: string) => {
     try {
+      console.log(input);
       const response = await ObtenerRespuestaIARequest(input);
       setRespuestaIA(response.data);
+      await ObtenerHistorial();
       return response.data;
     } catch (error) {
       console.error("Error al obtener la respuesta de IA", error);

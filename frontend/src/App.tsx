@@ -5,17 +5,38 @@ import robot from "/robot.gif";
 import dragon from "/dragon.gif";
 import { IoSend } from "react-icons/io5";
 function App() {
-  const [count, setCount] = useState(0);
-  const { ObtenerHistorial, historial } = usePockiContext();
+  const { ObtenerHistorial, historial, ObtenerRespuestaIA } = usePockiContext();
+  const [mensaje, setMensaje] = useState("");
+  const [mensajes, setMensajes] = useState(historial);
 
   useEffect(() => {
-    const prueba = async () => {
+    const cargarChat = async () => {
       try {
         ObtenerHistorial();
-      } catch (error) {}
+      } catch (error) {
+        console.log("Error al obtener el historial", error);
+      }
     };
-    prueba();
+    cargarChat();
   }, []);
+
+  const manejarEnvio = async () => {
+    if (!mensaje.trim()) return;
+
+    const nuevoMensajeUsuario = { sender: "user", content: mensaje };
+
+    setMensajes((prev) => [...prev, nuevoMensajeUsuario]);
+
+    setMensaje("");
+
+    try {
+      const respuesta = await ObtenerRespuestaIA(mensaje);
+      const nuevoMensajePocki = { sender: "bot", content: respuesta };
+      setMensajes((prev) => [...prev, nuevoMensajePocki]);
+    } catch (error) {
+      console.log("Error al obtener la respuesta de IA ", error);
+    }
+  };
 
   return (
     <Box
@@ -82,13 +103,18 @@ function App() {
             bottom={0}
             bg={"white"}
           >
-            <Box borderRadius={"20px"}  bg={"#EAEAEA"} w={"100%"} m={2}>
+            <Box borderRadius={"20px"} bg={"#EAEAEA"} w={"100%"} m={2}>
               <Input
                 type="text"
                 placeholder="Preguntale a Pocki"
                 border="none"
                 w={"100%"}
                 m={2}
+                value={mensaje}
+                onChange={(e) => setMensaje(e.target.value)}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && manejarEnvio();
+                }}
               />
             </Box>
             <Button
@@ -100,6 +126,7 @@ function App() {
               display={"flex"}
               justifyContent={"center"}
               alignItems={"center"}
+              onClick={manejarEnvio}
             >
               <IoSend size={30} color={"white"} />
             </Button>
