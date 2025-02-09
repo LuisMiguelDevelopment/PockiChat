@@ -3,6 +3,7 @@ import { type IRouter, Router } from "express";
 import {
   HistoryChat,
   ObtenerRespuestaIA,
+  ResetChat,
 } from "../controllers/messages.controller.js";
 import { validateInput } from "../middleware/messages.middleware.js";
 import { getConnection } from "../middleware/dbConnection.middleware.js";
@@ -61,7 +62,6 @@ messagesRouter.post(
   ObtenerRespuestaIA
 );
 
-
 /**
  * @swagger
  * /messages:
@@ -91,5 +91,7 @@ messagesRouter.post(
  */
 
 messagesRouter.get("/messages", getConnection, HistoryChat);
+
+messagesRouter.post("/reset-chat", getConnection, ResetChat);
 
 export { messagesRouter };
