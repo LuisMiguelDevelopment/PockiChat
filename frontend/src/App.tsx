@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { usePockiContext } from "./context/pocki.context";
 import { Box, Button, Heading, Image, Input, Text } from "@chakra-ui/react";
 import robot from "/robot.gif";
 import dragon from "/dragon.gif";
 import { IoSend } from "react-icons/io5";
 function App() {
-  const { ObtenerHistorial, historial, ObtenerRespuestaIA } = usePockiContext();
+  const { ObtenerHistorial, historial, ObtenerRespuestaIA, cargando } =
+    usePockiContext();
   const [mensaje, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState(historial);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cargarChat = async () => {
@@ -20,13 +22,24 @@ function App() {
     cargarChat();
   }, []);
 
+  useEffect(() => {
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [mensajes]);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [historial, mensajes]);
+
   const manejarEnvio = async () => {
     if (!mensaje.trim()) return;
 
     const nuevoMensajeUsuario = { sender: "user", content: mensaje };
-
     setMensajes((prev) => [...prev, nuevoMensajeUsuario]);
-
     setMensaje("");
 
     try {
@@ -63,6 +76,7 @@ function App() {
           </Heading>
         </Box>
         <Box
+        
           bg={"white"}
           color={"#4A4A4A"}
           borderRadius={"20px"}
@@ -70,65 +84,83 @@ function App() {
           mt={4}
           overflowY="auto"
           height={"600px"}
+          display="flex"
+          flexDirection="column"
         >
-          {historial.length > 0 ? (
-            historial.map(
-              (item: { sender: string; content: string }, index: number) => (
-                <Box
-                  key={index}
-                  p={2}
-                  display={"flex"}
-                  justifyContent={"end"}
-                  flexDir={item.sender === "user" ? "row-reverse" : "init"}
-                >
-                  <Image
-                    src={item.sender === "user" ? dragon : robot}
-                    alt="react logo"
-                    height={50}
-                  />
-                  <Box ml={2} bg={"#EAEAEA"} p={2} borderRadius={"10px"}>
-                    <Text>{item.content}</Text>
-                  </Box>
-                </Box>
-              )
-            )
-          ) : (
-            <Text>No hay historial disponible</Text>
-          )}
+          <Box flex="1" overflowY="auto" p={2} ref={chatRef}>
+            {historial.length > 0 ? (
+              historial
+                .concat(cargando ? [{ sender: "bot", content: "..." }] : [])
+                .map(
+                  (
+                    item: { sender: string; content: string },
+                    index: number
+                  ) => (
+                    <Box
+                      key={index}
+                      p={2}
+                      display="flex"
+                      justifyContent={item.sender === "user" ? "end" : "init"}
+                      flexDir={item.sender === "user" ? "row-reverse" : "init"}
+                    >
+                      <Image
+                        src={item.sender === "user" ? dragon : robot}
+                        alt="avatar"
+                        height={50}
+                      />
+                      <Box
+                        ml={2}
+                        bg={item.sender === "bot" ? "#D3D3D3" : "#EAEAEA"}
+                        p={2}
+                        borderRadius="10px"
+                      >
+                        <Text>{item.content}</Text>
+                      </Box>
+                    </Box>
+                  )
+                )
+            ) : (
+              <Text>No hay historial disponible</Text>
+            )}
+          </Box>
+
           <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            position={"sticky"}
-            bottom={0}
-            bg={"white"}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            position="sticky"
+            bottom="0"
+            bg="white"
+            w="100%"
+            p={2}
+           
           >
-            <Box borderRadius={"20px"} bg={"#EAEAEA"} w={"100%"} m={2}>
+            <Box borderRadius="20px" bg="#EAEAEA" w="100%" p={1}>
               <Input
                 type="text"
-                placeholder="Preguntale a Pocki"
+                placeholder="Pregúntale a Pocki"
                 border="none"
-                w={"100%"}
-                m={2}
+                h={50}
+                p={2}
                 value={mensaje}
                 onChange={(e) => setMensaje(e.target.value)}
                 onKeyDown={(e) => {
-                  e.key === "Enter" && manejarEnvio();
+                  if (e.key === "Enter") manejarEnvio();
                 }}
               />
             </Box>
             <Button
-              mr={1}
-              bg={"#632AE7"}
-              borderRadius={"50%"}
+              ml={2}
+              bg="#632AE7"
+              borderRadius="50%"
               h={50}
               w={50}
-              display={"flex"}
-              justifyContent={"center"}
-              alignItems={"center"}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
               onClick={manejarEnvio}
             >
-              <IoSend size={30} color={"white"} />
+              <IoSend size={30} color="white" />
             </Button>
           </Box>
         </Box>
