@@ -200,7 +200,7 @@ Este proyecto consiste en el desarrollo de una aplicación web de chat interacti
 
 ## 🫡 Novedades
 
-Como frontend, utilicé el empaquetador Vite con React.js. Le di acceso a la IA para recuperar la información previa de la conversación y así no perder el flujo del chat. Sin embargo, al recargar la página, esa información se perderá y será necesario generar una nueva.
+Como frontend, utilicé el empaquetador Vite con React.js. Le di acceso a la IA para recuperar la información previa de la conversación y así no perder el flujo del chat. Sin embargo, al recargar para un chat nuevo (Boton parte superior del Chat-bot), esa información se perderá y será necesario generar una nueva.
 
 ## 📞 Contacto
 
